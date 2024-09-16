@@ -1,0 +1,548 @@
+:root{
+    --color-orange: orange;
+    --color-yellow: #ffff00;
+    --color-blue: aquamarine;
+    --color-black: #000;
+    --color-red: #C00;
+    --color-green:chartreuse;
+    --body-padding: 20px;
+    --app-height: 100vh;
+
+    --flash-time: .4s;
+}
+
+body[data-ex-mode="true"]{
+    --flash-time: .1s;
+}
+
+@font-face {
+    font-weight: 900;
+    font-family: FOTMatisseProEB;
+    src: url(matisse-split.woff);
+}
+
+html{
+    font-size:2em;
+    line-height: 1.2;
+    font-weight: 900;
+    font-family: FOTMatisseProEB,'EVA-Matisse_Classic',serif;
+    background:var(--color-orange);
+    color: var(--color-orange);
+    text-align: center;
+    overflow: hidden;
+    // background: repeating-linear-gradient(
+    //     45deg,
+    //     var(--color-black), 
+    //     var(--color-black) 1em,
+    //     var(--color-orange) 1em,
+    //     var(--color-orange) 2em
+    // );
+    // animation: origin 5s infinite linear;
+
+    font-variant-east-asian: proportional-width;
+    -moz-font-feature-settings: "pwid";
+    -webkit-font-feature-settings: "pwid";
+    font-feature-settings: "pwid";
+
+    -webkit-text-size-adjust:none;
+}
+@keyframes origin {
+    100%{
+        background-position: 1em 1em;
+    }
+}
+body{
+    background:var(--color-black);
+    box-shadow: 0 0 0 var(--body-padding) var(--color-orange) inset;
+    // margin:var(--body-padding);
+    margin:0;
+    box-sizing: border-box;
+    height:var(--app-height);
+    // height: -webkit-fill-available;
+    position: relative;
+    overflow: hidden;
+    &[data-status="voted"]{
+        transition: none;
+        &[data-vote-status="resolve"]{
+            color: var(--color-green);
+            box-shadow: 0 0 0 var(--body-padding) var(--color-green) inset;
+        };
+        &[data-vote-status="reject"]{
+            color: var(--color-red);
+            box-shadow: 0 0 0 var(--body-padding) var(--color-red) inset;
+        }
+    }
+}
+
+
+.magi-box{
+    margin:var(--body-padding);
+    padding:var(--body-padding);
+    position: relative;
+    box-sizing: border-box;
+    height:calc(100% - var(--body-padding) * 2);
+    cursor: pointer;
+}
+
+html[data-device="iphone"],
+html[data-device="ipad"],
+html[data-device="ipod"],
+html[data-device="ios"]{
+    --app-height:-webkit-fill-available;
+    body{
+        min-height:-webkit-fill-available;
+        // height: calc(var(--app-height) - var(--body-padding) * 4);
+    }
+    .magi-box{
+        height:-webkit-fill-available;
+    }
+}
+
+h1,h2,h3,h4,
+p{
+    margin:0;
+}
+a{
+    color: currentColor;
+    text-decoration: none;
+}
+::selection{
+    background:none;
+}
+header{
+    &:after{
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    h1{
+        font-size: 4em;
+        display: inline-block;
+        transform: scale(1,0.8);
+        position: relative;
+        padding:0 .1em;
+        margin:0 .05em;
+        letter-spacing: .1em;
+        &:nth-child(1){
+            float: left;
+        }
+        &:nth-child(2){
+            float: right;
+        }
+        &:before,
+        &:after{
+            content: '';
+            position: absolute;
+            left:0;
+            right:0;
+            height:2px;
+            border-radius: .5px;
+        }
+        &:before{
+            top:0;
+            box-shadow: 
+                0 0 0 2px currentColor,
+                0 -8px 0 .1px var(--color-black),
+                0 -8px 0 2px currentColor;
+        }
+        &:after{
+            bottom:0;
+            box-shadow: 
+                0 0 0 2px currentColor,
+                0 8px 0 .1px var(--color-black),
+                0 8px 0 2px currentColor;
+        }
+    }
+}
+.config-box{
+    font-weight: 200;
+    font-family: 'Neue Helvetica',Helvetica,sans-serif;
+    font-size:.8em;
+    text-align: left;
+    padding:2em .3em;
+    
+    text-transform:uppercase;
+
+    h4{
+        font-size:3em;
+        transform: scale(.6,1);
+        transform-origin: 0 0;
+    }
+    p{
+        line-height: 1.4;
+        transform: scale(1,1.4);
+        b{
+            // margin-left:.2em;
+        }
+    }
+
+    .reset{
+        visibility: hidden;
+        display: inline-block;
+        margin:1em 0;
+        padding:0 .3em;
+        line-height: 1.4;
+        // border-radius: 1px;
+        transform: scale(1);
+        box-shadow: 0 0 0 .1em currentColor;
+    }
+}
+
+[data-text]{
+    &:before{
+        content: attr(data-text);
+    }
+}
+[data-text="ERR"]{
+    pointer-events: none;
+}
+.volume{
+    &:after{
+        content: '%';
+    }
+
+    &[data-text="1"]{
+        &:before{
+            content:'0.0000001';
+        }
+    }
+}
+.magi-logo{
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    margin:auto;
+
+    width: 8em;
+    height: 8em;
+    line-height: 8em;
+
+
+    border-radius: 9em;
+    font-size: 2em;
+    box-shadow:0 0 0 .18em currentColor;
+
+    pointer-events: none;
+
+    &:after{
+        display: none;
+        content:'System';
+        text-transform: uppercase;
+        font-weight: 400;
+        font-family: 'Neue Helvetica',Helvetica,sans-serif;
+        position: absolute;
+        top:57%;
+        left:0;
+        right:0;
+        text-align: center;
+        line-height: 1;
+        font-size:12px;
+        opacity: 0;
+        transform: scale(.4);
+    }
+}
+.magi-list{
+    // position: absolute;
+    // bottom:0;
+    // left:0;
+    // right:0;
+    // padding:20px;
+}
+.magi-item{
+    width: 8em;
+    height:8em;
+    display: inline-block;
+    box-shadow: 
+        0 0 0 .1em var(--color-black),
+        0 0 0 .4em currentColor,
+        0 0 0 .5em var(--color-black);
+    background:var(--color-blue);
+    background:var(--color-green);
+    text-align: center;
+    padding:0;
+    
+    font-family: 'Neue Helvetica',Helvetica,sans-serif;
+    h2{
+        font-size:4em;
+        font-weight: 900;
+        transform: scale(1.2 ,1);
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--color-black);
+    }
+    h3{
+        font-size:1em;
+        line-height: 2em;
+        letter-spacing: .1em;
+        color: var(--color-black);
+    }
+
+    position: absolute;
+    top:50%;
+
+
+
+    &.melchior{
+        left:50%;
+        // transform: translate(20%,30%);
+        transform: translate(35%,10%) rotate(-57deg);
+        h2{
+            &:before{
+                content:'1';
+            }
+        }
+    }
+    &.malthasar{
+        left:50%;
+        transform: translate(-50%,-135%);
+        h2{
+            &:before{
+                content:'2';
+            }
+        }
+    }
+    &.casper{
+        right:50%;
+        // transform: translate(-20%,30%);
+        transform: translate(-35%,10%) rotate(57deg);
+        h2{
+            &:before{
+                content:'3';
+            }
+        }
+    }
+    
+}
+
+
+.final-vote-status{
+    position: absolute;
+    font-size:2.5em;
+    top:3.4em;
+    right:.5em;
+    line-height: 1;
+    padding:.1em 0;
+
+    visibility: hidden;
+
+    box-shadow: 
+        0 0 0 .03em currentColor,
+        0 0 0 .07em var(--color-black),
+        0 0 0 .1em currentColor;
+    // border-radius: 1px;
+    &:before{
+        display: inline-block;
+        transform: scale(.85,1);
+    }
+
+
+    &[data-status="reject"]{
+        color:var(--color-red);
+        &:before{
+            content: '否定';
+        }
+    }
+    
+    &[data-status="resolve"]{
+        color:var(--color-green);
+        &:before{
+            content: '承認';
+        }
+    }
+}
+
+body[data-status="voting"]{
+    .magi-box>*{
+        pointer-events: none;
+    }
+    .magi-item{
+        background:var(--color-green);
+        animation: magi-flash var(--flash-time) infinite step-end;
+
+
+        h2{
+            &:before{
+                font-size:.6em;
+                font-family: FOTMatisseProEB,'EVA-Matisse_Classic',serif;
+                content: '承認';
+                animation: value-flash var(--flash-time) infinite step-end;
+            }
+        }
+
+        &.melchior{
+            animation-delay: .1s;
+        }
+        &.malthasar{
+            animation-delay: .2s;
+        }
+        &.casper{
+            animation-delay: .3s;
+        }
+
+
+    }
+    @keyframes magi-flash {
+        // 49.9%{ background-color: var(--color-blue); }
+        50%{ background-color: var(--color-red); }
+    }
+
+    @keyframes value-flash {
+        50%{
+            content: '否定';
+        }
+    }
+
+
+    .final-vote-status{
+        visibility: visible;
+        animation: flash var(--flash-time) infinite step-end;
+        color: var(--color-yellow);
+        &:before{
+            content: '審議中';
+        }
+    }
+    @keyframes flash {
+        // 49.9%{ background-color: var(--color-blue); }
+        60%{ visibility: hidden; }
+    }
+}
+
+body[data-status="voted"]{
+    .reset{
+        visibility:visible;
+    }
+    .final-vote-status{
+        visibility: visible;
+        margin:0 .5em;
+    }
+    .magi-item{
+
+        h2{
+            &:before{
+                font-size:.6em;
+                font-family: FOTMatisseProEB,'EVA-Matisse_Classic',serif;
+            }
+        }
+        &[data-status="resolve"]{
+            background:var(--color-green);
+            h2{
+                &:before{
+                    content:'承認';
+                }
+            }
+        }
+        &[data-status="reject"]{
+            background:var(--color-red);
+            h2{
+                &:before{
+                    content:'否定';
+                }
+            }
+            animation: red-flash 1s infinite ease;
+
+            @keyframes red-flash {
+                70%{ background:#BB0000; }
+            }
+        }
+    }
+}
+
+
+footer{
+    position: absolute;
+    bottom:0;
+    right:0;
+    font-size:14px;
+    padding:.5em .7em;
+}
+
+
+@media (max-width:1000px), (max-height:800px) {
+    html{
+        font-size:1.5em;
+    }
+}
+
+@media (max-width:700px), (max-height:700px){
+    :root{
+        --body-padding: 15px;
+    }
+    html{
+        font-size:1.2em;
+    }
+}
+@media (max-width:700px){
+    .magi-list{
+        position: absolute;
+        top: 60%;
+        left: 50%;
+    }
+    .magi-logo{
+        top:20%;
+    }
+}
+
+@media (max-width:520px), (max-height:520px){
+    :root{
+        --body-padding: 12px;
+    }
+    html{
+        font-size:.9em;
+    }
+}
+@media (max-width:400px), (max-height:400px){
+    :root{
+        --body-padding: 10px;
+    }
+    html{
+        font-size:.8em;
+    }
+}
+
+
+body{
+    transition:
+        color 1s ease,
+        box-shadow 1s ease;
+}
+.magi-logo{
+    transition:
+        top 1s ease,
+        transform 1s ease;
+        &:after{
+            transition:
+                opacity .5s ease;
+        }
+}
+.magi-box{
+    transition:
+        transform 1.4s ease-out,
+        opacity .5s ease;
+}
+footer{
+    transition:
+        transform .3s ease,
+        opacity .3s ease;
+}
+body[data-loading="true"]{
+    box-shadow: 0 0 0 0 var(--color-orange) inset;
+    .magi-logo{
+        top:0;
+        transition:transform .3s ease;
+        transform: scale(4,4);
+        &:after{
+            opacity: 1;
+        }
+    }
+    .magi-box{
+        transform: scale(.9);
+        opacity: 0;
+    }
+    footer{
+        opacity: 0;
+        transform: translate(0,10px);
+    }
+}
